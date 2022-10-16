@@ -2,7 +2,7 @@ pipeline {
 	agent {
         docker { 
             image 'node:lts-bullseye-slim' 
-            args '-p 3000:3000 --user 1000:1000'
+            args '-p 3000:3000 --privileged'
         }
     }
 	
