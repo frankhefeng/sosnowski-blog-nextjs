@@ -10,7 +10,6 @@ pipeline {
         stage('build') {
             steps {
                 echo 'Installing Dependencies'
-                sh 'npm config set cache --global /tmp/.npmcache/.'
                 sh 'npm install'
 				echo 'Building NextJS App'
 				sh 'next build && next export'
