@@ -10,6 +10,7 @@ pipeline {
         stage('build') {
             steps {
                 echo 'Installing Dependencies'
+                sh 'whoami'
                 sh 'npm install'
 				echo 'Building NextJS App'
 				sh 'next build && next export'
