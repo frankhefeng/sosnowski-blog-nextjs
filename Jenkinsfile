@@ -9,8 +9,6 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                echo 'Switch to node user'
-                sh 'su - node'
                 echo 'Installing Dependencies'
                 sh 'npm install'
 				echo 'Building NextJS App'
