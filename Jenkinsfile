@@ -9,10 +9,12 @@ pipeline {
     stages {
         stage('build') {
             steps {
+                echo 'Switch to node user'
+                sh 'su - node'
                 echo 'Installing Dependencies'
-                sh 'su - node -c "npm install"'
+                sh 'npm install'
 				echo 'Building NextJS App'
-				sh 'su - node -c "next build && next export"'
+				sh 'next build && next export'
             }
         }
         stage('deploy development') {
