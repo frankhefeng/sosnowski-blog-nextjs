@@ -10,9 +10,9 @@ pipeline {
         stage('build') {
             steps {
                 echo 'Installing Dependencies'
-                sh - node -c 'npm install'
+                sh 'su - rahul -c "npm install"'
 				echo 'Building NextJS App'
-				sh - node -c 'next build && next export'
+				sh 'su - rahul -c "next build && next export"'
             }
         }
         stage('deploy development') {
