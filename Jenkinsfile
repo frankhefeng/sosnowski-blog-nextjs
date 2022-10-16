@@ -1,10 +1,8 @@
-#!groovy
-
 pipeline {
     agent {
         dockerfile {
             filename 'Dockerfile.build'
-            additionalBuildArgs additionalBuildArgs '--build-arg UID=$(id -u) --build-arg GID=$(id -g)  --build-arg UNAME=jenkins'
+            additionalBuildArgs '--build-arg UID=$(id -u) --build-arg GID=$(id -g)  --build-arg UNAME=jenkins'
         }
     }
 	
