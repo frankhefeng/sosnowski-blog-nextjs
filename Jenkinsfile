@@ -12,7 +12,7 @@ pipeline {
                 echo 'Installing Dependencies'
                 sh 'npm install'
 				echo 'Building NextJS App'
-				sh 'next build && next export'
+				sh 'npx next build && npx next export'
             }
         }
         stage('deploy development') {
