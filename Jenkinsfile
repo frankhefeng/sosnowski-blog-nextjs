@@ -1,19 +1,10 @@
 #!groovy
 
 pipeline {
-    environment {
-            JENKINS_USER_NAME = "${sh(script:'id -un', returnStdout: true).trim()}"
-            JENKINS_USER_ID = "${sh(script:'id -u', returnStdout: true).trim()}"
-            JENKINS_GROUP_ID = "${sh(script:'id -g', returnStdout: true).trim()}"
-    }
     agent {
         dockerfile {
             filename 'Dockerfile.build'
-            additionalBuildArgs '''\
-                --build-arg GID=$JENKINS_GROUP_ID \
-                --build-arg UID=$JENKINS_USER_ID \
-                --build-arg UNAME=$JENKINS_USER_NAME \
-            '''
+            additionalBuildArgs additionalBuildArgs '--build-arg UID=$(id -u) --build-arg GID=$(id -g)  --build-arg UNAME=jenkins'
         }
     }
 	
