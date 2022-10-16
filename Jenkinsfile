@@ -1,11 +1,10 @@
 pipeline {
 	agent {
-        docker { image 'node:16.13.1-alpine' }
+        docker { 
+            image 'node:lts-bullseye-slim' 
+            args '-p 3000:3000'
+        }
     }
-	environment {
-		branch = 'master'
-		scmUrl = 'https://github.com/frankhefeng/sosnowski-blog-nextjs'
-	}	
 	
     stages {
         stage('build') {
@@ -13,7 +12,7 @@ pipeline {
                 echo 'Installing Dependencies'
                 sh 'npm install'
 				echo 'Building NextJS App'
-				sh 'node_modules/next/dist/bin/next build'
+				sh 'next build && next export'
             }
         }
         stage('deploy development') {
@@ -32,9 +31,9 @@ pipeline {
 			}
 		}
     }
-	post {
-		failure {
-			mail to: 'frankhe.cn@gmail.com', subject: 'Pipeline failed', body: "${env.BUILD_URL}"
-		}
-	}
+	// post {
+	// 	failure {
+	// 		mail to: 'frankhe.cn@gmail.com', subject: 'Pipeline failed', body: "${env.BUILD_URL}"
+	// 	}
+	// }
 }
