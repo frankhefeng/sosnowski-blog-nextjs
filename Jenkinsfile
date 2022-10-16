@@ -1,6 +1,7 @@
 pipeline {
-	
-	agent any
+	agent {
+        docker { image 'node:16.13.1-alpine' }
+    }
 	environment {
 		branch = 'master'
 		scmUrl = 'https://github.com/frankhefeng/sosnowski-blog-nextjs'
