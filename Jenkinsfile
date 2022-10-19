@@ -1,3 +1,7 @@
+def BLOG_S3_BUCKET_NAME = ""
+def BLOG_CLOUDFRONT_DISTRIBUTION_ID = ""
+def BLOG_CLOUDFRONT_DOMAIN_NAME = ""
+
 pipeline {
     agent none
     stages {
