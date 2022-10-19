@@ -25,27 +25,30 @@ pipeline {
                     args '-i --entrypoint='
                 }
             }
-            withAWS(credentials:'frank') {
-                stages {
-                    stage('Terraform init') {
-                        steps {
+            stages {
+                stage('Terraform init') {
+                    steps {
+                        withAWS(credentials:'frank') {
                             sh "cd infra/blog; terraform init -input=false"
                         }
                     }
-                    stage('Terraform plan') {
-                        steps {
+                }
+                stage('Terraform plan') {
+                    steps {
+                        withAWS(credentials:'frank') {
                             sh 'cd infra/blog; terraform plan'
                         }
                     }
-                    stage('Terraform apply') {
-                        steps {
+                }
+                stage('Terraform apply') {
+                    steps {
+                        withAWS(credentials:'frank') {
                             sh 'cd infra/blog; terraform apply'
                         }
                     }
                 }
             }
         }
-
     }
 	// post {
 	// 	failure {
