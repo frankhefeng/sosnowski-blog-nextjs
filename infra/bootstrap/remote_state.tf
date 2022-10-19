@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "sosnowski-blog-nextjs-terraform-state-${data.aws_caller_identity.current.account_id}"
+  bucket = "sosnowski-blog-nextjs-terraform-state-965161619314"
 
   object_lock_enabled = true
   tags = {
