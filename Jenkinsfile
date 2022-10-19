@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Deployment-Dev') {
             when {
-                branch 'feature/*'
+                branch 'feat/*'
             }
             agent {
                 docker {
