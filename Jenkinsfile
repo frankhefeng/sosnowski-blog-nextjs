@@ -25,8 +25,8 @@ pipeline {
                     args '-i --entrypoint='
                 }
             }
-            stages {
-                withAWS(credentials:'frank') {
+            withAWS(credentials:'frank') {
+                stages {
                     stage('Terraform init') {
                         steps {
                             sh "cd infra/blog; terraform init -input=false"
