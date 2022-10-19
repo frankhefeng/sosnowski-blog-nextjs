@@ -19,7 +19,7 @@ pipeline {
                             sh '''
                                 cd infra/blog; 
                                 terraform init -input=false
-                                terraform workspace select $APP_ENV || terraform workspace new $APP_ENV
+                                terraform workspace select app-${env.GIT_COMMIT} || terraform workspace new $APP_ENV
                                 terraform plan -var="app_env=$APP_ENV"
                                 terraform apply -var="app_env=$APP_ENV" -auto-approve
                             '''
