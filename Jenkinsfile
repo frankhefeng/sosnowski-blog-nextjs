@@ -1,8 +1,8 @@
 pipeline {
     agent none
     environment {
-        TEMP_GIT_BRANCH=${GIT_BRANCH}
-        APP_ENV = "app-${TEMP_GIT_BRANCH#*/}"
+        GIT_BRANCH_LOCAL=$(echo $GIT_BRANCH   | sed -e "s|origin/||g")
+        APP_ENV="app-${GIT_BRANCH_LOCAL}"
     }
     stages {
         stage('dev') {
