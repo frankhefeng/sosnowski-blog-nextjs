@@ -9,12 +9,10 @@ pipeline {
                 }
             }
             steps {
-                echo 'Switching to blog folder'
-                sh 'cd blog'
                 echo 'Installing Dependencies'
-                sh 'npm install'
+                sh 'cd blog; npm install'
 				echo 'Building NextJS App'
-				sh 'npx next build && npx next export'
+				sh 'cd blog; npx next build && npx next export'
             }
         }
         stage('Deployment-Dev') {
