@@ -4,7 +4,7 @@ pipeline {
         stage('dev') {
             when { branch 'feat/**' }
             environment {
-                APP_ENV = "dev-${GIT_COMMIT}"
+                APP_ENV = "dev-${env.GIT_COMMIT}"
             }
             stages {
                 stage('Infra') {

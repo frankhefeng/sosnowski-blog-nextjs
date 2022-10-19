@@ -45,7 +45,7 @@ resource "aws_cloudfront_distribution" "blog" {
 }
 
 resource "aws_cloudfront_origin_access_control" "blog" {
-  name                              = "blog"
+  name                              = "blog-${var.app_env}"
   description                       = "blog CloudFront OAC Policy"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
