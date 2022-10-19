@@ -25,12 +25,14 @@ pipeline {
                                 terraform workspace select ${APP_ENV} || terraform workspace new ${APP_ENV}
                                 terraform plan -var="app_env=${APP_ENV}"
                                 terraform apply -var="app_env=${APP_ENV}" -auto-approve
+                                echo ${BLOG_S3_BUCKET_NAME}
                             '''
                             script {
                                 BLOG_S3_BUCKET_NAME = sh(returnStdout: true, script: "terraform output blog_s3_bucket_name").trim()
                                 BLOG_CLOUDFRONT_DISTRIBUTION_ID = sh(returnStdout: true, script: "terraform output blog_cloudfront_distribution_id").trim()
                                 BLOG_CLOUDFRONT_DOMAIN_NAME = sh(returnStdout: true, script: "terraform output blog_cloudfront_domain_name").trim()
                             }
+                            echo ${BLOG_S3_BUCKET_NAME}
                         }
                     }
                 }
@@ -43,6 +45,7 @@ pipeline {
                     }
                     steps {
                         withAWS(credentials:'blog') {
+                            echo ${BLOG_S3_BUCKET_NAME}
                             sh '''
                                 export GIT_BRANCH_LOCAL=$(echo ${GIT_BRANCH}   | sed -e "s|/|-|g")
                                 export APP_ENV="app-${GIT_BRANCH_LOCAL}"
