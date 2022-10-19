@@ -9,11 +9,14 @@ pipeline {
                 }
             }
             steps {
-                cd blog
-                echo 'Installing Dependencies'
-                npm install
-				echo 'Building NextJS App'
-				npx next build && npx next export
+                sh '''
+                    cd blog
+                    echo 'Installing Dependencies'
+                    npm install
+                    echo 'Building NextJS App'
+                    npx next build
+                    npx next export
+                '''
             }
         }
         stage('Deployment-Dev') {
@@ -28,10 +31,12 @@ pipeline {
                     }
                     steps {
                         withAWS(credentials:'blog') {
-                            cd infra/blog; 
-                            terraform init -input=false
-                            terraform plan
-                            terraform apply  -auto-approve
+                            sh '''
+                                cd infra/blog; 
+                                terraform init -input=false
+                                terraform plan
+                                terraform apply  -auto-approve
+                            '''
                         }
                     }
                 }
@@ -43,8 +48,10 @@ pipeline {
                     }
                     steps {
                         withAWS(credentials:'blog') {
-                            cd blog/out
-                            aws s3 sync . s3://sosnowski-blog-nextjs-965161619314
+                            sh '''
+                                cd blog/out
+                                aws s3 sync . s3://sosnowski-blog-nextjs-965161619314
+                            '''
                         }
                     }
                 }
