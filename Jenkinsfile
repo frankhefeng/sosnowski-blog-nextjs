@@ -53,10 +53,9 @@ pipeline {
                                 npm install
                                 echo 'Building NextJS App'
                                 npx next build && npx next export
-                                cd out
-                                aws s3 sync . s3://$BUCKET_NAME
-                                aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
                             '''
+                            sh "cd out; aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}"
+                            sh "aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
                         }
                     }
                 }
