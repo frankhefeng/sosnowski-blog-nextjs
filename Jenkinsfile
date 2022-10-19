@@ -45,8 +45,8 @@ pipeline {
                         withAWS(credentials:'blog') {
                             sh "echo ${BLOG_S3_BUCKET_NAME}"
                             sh '''
-                                export BUCKET_NAME="${BLOG_S3_BUCKET_NAME}"
-                                export CLOUDFRONT_DISTRIBUTION_ID="${BLOG_CLOUDFRONT_DISTRIBUTION_ID}"
+                                export BUCKET_NAME=${BLOG_S3_BUCKET_NAME}
+                                export CLOUDFRONT_DISTRIBUTION_ID=${BLOG_CLOUDFRONT_DISTRIBUTION_ID}
                                 cd blog
                                 echo 'Installing Dependencies'
                                 npm install
