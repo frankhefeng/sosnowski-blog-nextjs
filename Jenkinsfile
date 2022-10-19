@@ -1,5 +1,8 @@
 pipeline {
     agent none
+    environment {
+        APP_ENV = "app-${GIT_BRANCH.split("/")[1]}"
+    }
     stages {
         stage('dev') {
             when { branch 'feat/**' }
@@ -14,7 +17,6 @@ pipeline {
                     steps {
                         withAWS(credentials:'blog') {
                             sh '''
-                                export APP_ENV="${GIT_BRANCH.split("/")[1]}"
                                 cd infra/blog; 
                                 terraform init -input=false
                                 terraform workspace select ${APP_ENV} || terraform workspace new ${APP_ENV}
@@ -34,7 +36,6 @@ pipeline {
                     steps {
                         withAWS(credentials:'blog') {
                             sh '''
-                                export APP_ENV="${GIT_BRANCH.split("/")[1]}"
                                 cd blog
                                 echo 'Installing Dependencies'
                                 npm install
