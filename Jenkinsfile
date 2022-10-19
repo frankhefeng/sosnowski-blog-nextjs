@@ -1,35 +1,48 @@
 pipeline {
-    agent {
-        dockerfile {
-            filename 'Dockerfile.build'
-            additionalBuildArgs '--build-arg UID=$(id -u) --build-arg GID=$(id -g)  --build-arg UNAME=jenkins'
-        }
-    }
-	
+    agent none
     stages {
-        stage('build') {
+        stage('Build') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile.build'
+                    additionalBuildArgs '--build-arg UID=$(id -u) --build-arg GID=$(id -g)  --build-arg UNAME=jenkins'
+                }
+            }
             steps {
+                echo 'Switching to blog folder'
+                sh 'cd blog'
                 echo 'Installing Dependencies'
                 sh 'npm install'
 				echo 'Building NextJS App'
 				sh 'npx next build && npx next export'
             }
         }
-        stage('deploy development') {
-            steps {
-                echo 'Deploy Development'
+        stage('Deployment') {
+            agent {
+                docker {
+                    image 'hashicorp/terraform:light'
+                    args '-i --entrypoint='
+                }
+            }
+            stages {
+                stage('Terraform init') {
+                    steps {
+                        sh "cd infra/blog; terraform init -input=false"
+                    }
+                }
+                stage('Terraform plan') {
+                    steps {
+                        sh 'cd infra/blog; terraform plan'
+                    }
+                }
+                stage('Terraform apply') {
+                    steps {
+                        sh 'cd infra/blog; terraform apply'
+                    }
+                }
             }
         }
-        stage('deploy staging') {
-            steps {
-                echo 'Deploy Staging'
-            }
-        }
-		stage('deploy production') {
-			steps {
-				echo 'Deploy Production'
-			}
-		}
+
     }
 	// post {
 	// 	failure {
