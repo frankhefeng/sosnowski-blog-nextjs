@@ -24,6 +24,7 @@ pipeline {
                             '''
                             BLOG_S3_BUCKET_NAME = sh(returnStdout: true, script: "terraform output blog_s3_bucket_name").trim()
                             BLOG_CLOUDFRONT_DISTRIBUTION_ID = sh(returnStdout: true, script: "terraform output blog_cloudfront_distribution_id").trim()
+                            BLOG_CLOUDFRONT_DOMAIN_NAME = sh(returnStdout: true, script: "terraform output blog_cloudfront_domain_name").trim()
                         }
                     }
                 }
@@ -47,6 +48,7 @@ pipeline {
                                 cd out
                                 aws s3 sync . s3://$BLOG_S3_BUCKET_NAME
                                 aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+                                echo https://$BLOG_CLOUDFRONT_DOMAIN_NAME
                             '''
                         }
                     }

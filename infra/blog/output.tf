@@ -6,3 +6,7 @@ output "blog_cloudfront_distribution_id" {
   value       = aws_cloudfront_distribution.blog.id
   description = "Cloudfront distribution ID"
 }
+output "blog_cloudfront_domain_name" {
+  value       = aws_cloudfront_distribution.blog.domain_name
+  description = "Cloudfront distribution domain name"
+}
