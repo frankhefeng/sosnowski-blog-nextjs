@@ -28,9 +28,9 @@ pipeline {
                                 echo ${BLOG_S3_BUCKET_NAME}
                             '''
                             script {
-                                BLOG_S3_BUCKET_NAME = sh(returnStdout: true, script: "terraform output blog_s3_bucket_name").trim()
-                                BLOG_CLOUDFRONT_DISTRIBUTION_ID = sh(returnStdout: true, script: "terraform output blog_cloudfront_distribution_id").trim()
-                                BLOG_CLOUDFRONT_DOMAIN_NAME = sh(returnStdout: true, script: "terraform output blog_cloudfront_domain_name").trim()
+                                BLOG_S3_BUCKET_NAME = sh(returnStdout: true, script: "cd infra/blog; terraform output blog_s3_bucket_name").trim()
+                                BLOG_CLOUDFRONT_DISTRIBUTION_ID = sh(returnStdout: true, script: "cd infra/blog; terraform output blog_cloudfront_distribution_id").trim()
+                                BLOG_CLOUDFRONT_DOMAIN_NAME = sh(returnStdout: true, script: "cd infra/blog; terraform output blog_cloudfront_domain_name").trim()
                             }
                             sh "echo ${BLOG_S3_BUCKET_NAME}"
                         }
