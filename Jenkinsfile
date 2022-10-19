@@ -4,7 +4,7 @@ pipeline {
         stage('dev') {
             when { branch 'feat/**' }
             environment {
-                APP_ENV = "dev-$env.GIT_COMMIT"
+                APP_ENV = "dev-${GIT_COMMIT}"
             }
             stages {
                 stage('Infra') {
@@ -20,7 +20,7 @@ pipeline {
                                 cd infra/blog; 
                                 terraform init -input=false
                                 terraform workspace select $APP_ENV || terraform workspace new $APP_ENV
-                                terraform plan
+                                terraform plan -var="app_env=$APP_ENV"
                                 terraform apply -var="app_env=$APP_ENV" -auto-approve
                             '''
                         }
