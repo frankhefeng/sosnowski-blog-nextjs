@@ -52,7 +52,7 @@ pipeline {
                                 npx next build && npx next export
                             '''
                             sh "cd blog/out; aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}"
-                            sh "export INVALIDATION_ID=`aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths '/*' | jq -r .Invalidation.Id` && aws cloudfront wait invalidation-completed --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --id ${INVALIDATION_ID}"
+                            sh "aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
                         }
                     }
                 }
