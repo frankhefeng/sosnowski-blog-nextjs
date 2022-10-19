@@ -3,9 +3,6 @@ pipeline {
     stages {
         stage('dev') {
             when { branch 'feat/**' }
-            environment {
-                APP_ENV = "dev-${env.GIT_COMMIT}"
-            }
             stages {
                 stage('Infra') {
                     agent {
@@ -18,15 +15,11 @@ pipeline {
                         withAWS(credentials:'blog') {
                             sh '''
                                 cd infra/blog; 
-                                echo 1
-                                echo ${GIT_COMMIT}
-                                echo 2
-                                echo ${env.GIT_COMMIT}
-                                set
+                                export APP_ENV="dev-${GIT_COMMIT}"
                                 terraform init -input=false
-                                terraform workspace select $APP_ENV || terraform workspace new $APP_ENV
-                                terraform plan -var="app_env=$APP_ENV"
-                                terraform apply -var="app_env=$APP_ENV" -auto-approve
+                                terraform workspace select ${APP_ENV} || terraform workspace new ${APP_ENV}
+                                terraform plan -var="app_env=${APP_ENV}"
+                                terraform apply -var="app_env=${APP_ENV}" -auto-approve
                             '''
                         }
                     }
@@ -47,7 +40,7 @@ pipeline {
                                 echo 'Building NextJS App'
                                 npx next build && npx next export
                                 cd out
-                                aws s3 sync . s3://sosnowski-blog-nextjs-965161619314-$APP_ENV
+                                aws s3 sync . s3://sosnowski-blog-nextjs-965161619314-${APP_ENV}
                             '''
                         }
                     }
