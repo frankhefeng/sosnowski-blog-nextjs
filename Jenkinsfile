@@ -25,14 +25,12 @@ pipeline {
                                 terraform workspace select ${APP_ENV} || terraform workspace new ${APP_ENV}
                                 terraform plan -var="app_env=${APP_ENV}"
                                 terraform apply -var="app_env=${APP_ENV}" -auto-approve
-                                echo ${BLOG_S3_BUCKET_NAME}
                             '''
                             script {
                                 BLOG_S3_BUCKET_NAME = sh(returnStdout: true, script: "cd infra/blog; terraform output blog_s3_bucket_name").trim()
                                 BLOG_CLOUDFRONT_DISTRIBUTION_ID = sh(returnStdout: true, script: "cd infra/blog; terraform output blog_cloudfront_distribution_id").trim()
                                 BLOG_CLOUDFRONT_DOMAIN_NAME = sh(returnStdout: true, script: "cd infra/blog; terraform output blog_cloudfront_domain_name").trim()
                             }
-                            sh "echo ${BLOG_S3_BUCKET_NAME}"
                         }
                     }
                 }
@@ -55,8 +53,8 @@ pipeline {
                                 echo 'Building NextJS App'
                                 npx next build && npx next export
                                 cd out
-                                aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}
-                                aws cloudfront create-invalidation --distribution-id ${BLOG_CLOUDFRONT_DISTRIBUTION_ID} --paths "/*"
+                                aws s3 sync . "s3://${BLOG_S3_BUCKET_NAME}"
+                                aws cloudfront create-invalidation --distribution-id "${BLOG_CLOUDFRONT_DISTRIBUTION_ID}" --paths "/*"
                             '''
                         }
                     }
