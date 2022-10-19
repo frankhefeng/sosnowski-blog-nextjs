@@ -14,8 +14,8 @@ pipeline {
                     steps {
                         withAWS(credentials:'blog') {
                             sh '''
-                                export GIT_BRANCH_LOCAL=$(echo ${GIT_BRANCH}   | sed -e "s|origin/||g")
-                                export APP_ENV="app-${GIT_BRANCH_LOCAL}"
+                                export GIT_BRANCH_LOCAL=$(echo ${GIT_BRANCH}   | sed -e "s|*/||g")
+                                export APP_ENV="app-${GIT_BRANCH_LOCAL#*/}"
                                 cd infra/blog; 
                                 terraform init -input=false
                                 terraform workspace select ${APP_ENV} || terraform workspace new ${APP_ENV}
@@ -36,7 +36,7 @@ pipeline {
                         withAWS(credentials:'blog') {
                             sh '''
                                 export GIT_BRANCH_LOCAL=$(echo ${GIT_BRANCH}   | sed -e "s|origin/||g")
-                                export APP_ENV="app-${GIT_BRANCH_LOCAL}"
+                                export APP_ENV="app-${GIT_BRANCH_LOCAL#*/}"
                                 cd blog
                                 echo 'Installing Dependencies'
                                 npm install
