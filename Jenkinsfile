@@ -26,19 +26,21 @@ pipeline {
                 }
             }
             stages {
-                stage('Terraform init') {
-                    steps {
-                        sh "cd infra/blog; terraform init -input=false"
+                withAWS(credentials:'frank') {
+                    stage('Terraform init') {
+                        steps {
+                            sh "cd infra/blog; terraform init -input=false"
+                        }
                     }
-                }
-                stage('Terraform plan') {
-                    steps {
-                        sh 'cd infra/blog; terraform plan'
+                    stage('Terraform plan') {
+                        steps {
+                            sh 'cd infra/blog; terraform plan'
+                        }
                     }
-                }
-                stage('Terraform apply') {
-                    steps {
-                        sh 'cd infra/blog; terraform apply'
+                    stage('Terraform apply') {
+                        steps {
+                            sh 'cd infra/blog; terraform apply'
+                        }
                     }
                 }
             }
