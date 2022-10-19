@@ -17,7 +17,10 @@ pipeline {
 				sh 'npx next build && npx next export'
             }
         }
-        stage('Deployment') {
+        stage('Deployment-Dev') {
+            when {
+                branch 'feature/*'
+            }
             agent {
                 docker {
                     image 'hashicorp/terraform:light'
