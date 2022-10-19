@@ -1,7 +1,8 @@
 pipeline {
     agent none
     environment {
-        APP_ENV = "app-${GIT_BRANCH#*/} "
+        TEMP_GIT_BRANCH=${GIT_BRANCH}
+        APP_ENV = "app-${TEMP_GIT_BRANCH#*/}"
     }
     stages {
         stage('dev') {
