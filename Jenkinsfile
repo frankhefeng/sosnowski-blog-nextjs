@@ -41,7 +41,7 @@ pipeline {
                                 echo 'Building NextJS App'
                                 npx next build && npx next export
                                 cd out
-                                aws s3 sync . s3://sosnowski-blog-nextjs-965161619314-${APP_ENV}
+                                aws s3 sync . s3://sosnowski-blog-nextjs-965161619314-$APP_ENV
                             '''
                         }
                     }
