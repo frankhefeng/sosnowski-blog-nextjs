@@ -1,7 +1,7 @@
 pipeline {
     agent none
     environment {
-        APP_ENV = "app-${GIT_BRANCH.split("/")[1]}"
+        APP_ENV = "app-${GIT_BRANCH.split('/')[1]}"
     }
     stages {
         stage('dev') {
