@@ -14,7 +14,7 @@ pipeline {
                     steps {
                         withAWS(credentials:'blog') {
                             sh '''
-                                export APP_ENV="dev-${GIT_REVISION:0:7}"
+                                export APP_ENV="dev-${GIT_COMMIT:0:7}"
                                 cd infra/blog; 
                                 terraform init -input=false
                                 terraform workspace select ${APP_ENV} || terraform workspace new ${APP_ENV}
@@ -34,7 +34,7 @@ pipeline {
                     steps {
                         withAWS(credentials:'blog') {
                             sh '''
-                                export APP_ENV="dev-${GIT_REVISION:0:7}"
+                                export APP_ENV="dev-${GIT_COMMIT:0:7}"
                                 cd blog
                                 echo 'Installing Dependencies'
                                 npm install
