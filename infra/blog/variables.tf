@@ -1,4 +1,4 @@
-variable "branch_name" {
-  description = "Git branch name"
+variable "app_env" {
+  description = "Application deployment env name"
   type = string
 }

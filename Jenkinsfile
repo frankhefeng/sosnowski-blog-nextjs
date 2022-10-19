@@ -1,11 +1,11 @@
 pipeline {
     agent none
-    environment {
-        BRANCH_NAME = "${GIT_BRANCH.split('/').size() > 1 ? GIT_BRANCH.split('/')[1..-1].join('/') : GIT_BRANCH}"
-    }
     stages {
         stage('dev') {
             when { branch 'feat/**' }
+            environment {
+                APP_ENV = "dev-$GIT_COMMIT"
+            }
             stages {
                 stage('Infra') {
                     agent {
@@ -19,9 +19,9 @@ pipeline {
                             sh '''
                                 cd infra/blog; 
                                 terraform init -input=false
-                                terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+                                terraform workspace select $APP_ENV || terraform workspace new $APP_ENV
                                 terraform plan
-                                terraform apply -var="branch_name=$BRANCH_NAME" -auto-approve
+                                terraform apply -var="APP_ENV=$APP_ENV" -auto-approve
                             '''
                         }
                     }
@@ -42,7 +42,7 @@ pipeline {
                                 echo 'Building NextJS App'
                                 npx next build && npx next export
                                 cd out
-                                aws s3 sync . s3://sosnowski-blog-nextjs-965161619314-$BRANCH_NAME
+                                aws s3 sync . s3://sosnowski-blog-nextjs-965161619314-$APP_ENV
                             '''
                         }
                     }

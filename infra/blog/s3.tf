@@ -1,9 +1,9 @@
 
 resource "aws_s3_bucket" "blog_bucket" {
-  bucket = "sosnowski-blog-nextjs-965161619314-${var.branch_name}"
+  bucket = "sosnowski-blog-nextjs-965161619314-${var.app_env}"
 
   tags = {
-    Name = "sosnowski-blog-nextjs s3 origin ${var.branch_name}"
+    Name = "sosnowski-blog-nextjs s3 origin ${var.app_env}"
   }
 }
 
