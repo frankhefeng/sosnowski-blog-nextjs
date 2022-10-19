@@ -9,50 +9,47 @@ pipeline {
                 }
             }
             steps {
+                cd blog
                 echo 'Installing Dependencies'
-                sh 'cd blog; npm install'
+                npm install
 				echo 'Building NextJS App'
-				sh 'cd blog; npx next build && npx next export'
+				npx next build && npx next export
             }
         }
         stage('Deployment-Dev') {
-            when {
-                branch 'feat/**'
-            }
-            agent {
-                docker {
-                    image 'hashicorp/terraform:light'
-                    args '-i --entrypoint='
-                }
-            }
+            when { branch 'feat/**' }
             stages {
-                stage('Terraform init') {
+                stage('Deploy Infra') {
+                    agent {
+                        docker {
+                            image 'hashicorp/terraform:light'
+                            args '-i --entrypoint='
+                        }
+                    }
                     steps {
-                        withAWS(credentials:'frank') {
-                            sh "cd infra/blog; terraform init -input=false"
+                        withAWS(credentials:'blog') {
+                            cd infra/blog; 
+                            terraform init -input=false
+                            terraform plan
+                            terraform apply  -auto-approve
                         }
                     }
                 }
-                stage('Terraform plan') {
+                stage('Deploy Website') {
+                    agent {
+                        docker {
+                            image 'amazon/aws-cli '
+                        }
+                    }
                     steps {
-                        withAWS(credentials:'frank') {
-                            sh 'cd infra/blog; terraform plan'
+                        withAWS(credentials:'blog') {
+                            cd blog/out
+                            aws s3 sync . s3://sosnowski-blog-nextjs-965161619314
                         }
                     }
                 }
-                stage('Terraform apply') {
-                    steps {
-                        withAWS(credentials:'frank') {
-                            sh 'cd infra/blog; terraform apply'
-                        }
-                    }
-                }
+
             }
         }
     }
-	// post {
-	// 	failure {
-	// 		mail to: 'frankhe.cn@gmail.com', subject: 'Pipeline failed', body: "${env.BUILD_URL}"
-	// 	}
-	// }
 }
