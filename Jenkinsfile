@@ -45,16 +45,16 @@ pipeline {
                         withAWS(credentials:'blog') {
                             sh "echo ${BLOG_S3_BUCKET_NAME}"
                             sh '''
-                                export GIT_BRANCH_LOCAL=$(echo ${GIT_BRANCH}   | sed -e "s|/|-|g")
-                                export APP_ENV="app-${GIT_BRANCH_LOCAL}"
+                                export BUCKET_NAME="${BLOG_S3_BUCKET_NAME}"
+                                export CLOUDFRONT_DISTRIBUTION_ID="${BLOG_CLOUDFRONT_DISTRIBUTION_ID}
                                 cd blog
                                 echo 'Installing Dependencies'
                                 npm install
                                 echo 'Building NextJS App'
                                 npx next build && npx next export
                                 cd out
-                                aws s3 sync . "s3://${BLOG_S3_BUCKET_NAME}"
-                                aws cloudfront create-invalidation --distribution-id "${BLOG_CLOUDFRONT_DISTRIBUTION_ID}" --paths "/*"
+                                aws s3 sync . s3://$BUCKET_NAME
+                                aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
                             '''
                         }
                     }
