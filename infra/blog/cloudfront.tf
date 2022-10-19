@@ -4,6 +4,7 @@ resource "aws_cloudfront_distribution" "blog" {
 
   web_acl_id = ""
   is_ipv6_enabled = true
+  default_root_object = "index.html"
 
   # aliases = ["${var.website_domain}.${var.hosted_zone_domain}"]
     origin {
