@@ -68,8 +68,8 @@ pipeline {
                             '''
                             sh "cd blog/out; aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}"
                             sh "aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
-                            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                         }
+                        setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                     }
                 }
             }
@@ -122,8 +122,8 @@ pipeline {
                             '''
                             sh "cd blog/out; aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}"
                             sh "aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
-                            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                         }
+                        setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                     }
                 }
             }
@@ -175,8 +175,8 @@ pipeline {
                             '''
                             sh "cd blog/out; aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}"
                             sh "aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
-                            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                         }
+                        setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                     }
                 }
             }
@@ -228,8 +228,8 @@ pipeline {
                             '''
                             sh "cd blog/out; aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}"
                             sh "aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
-                            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                         }
+                        setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                     }
                 }
             }
