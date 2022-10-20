@@ -21,7 +21,7 @@ pipeline {
     agent any
     stages {
         stage('dev') {
-            when { branch 'feat/**' }
+            when { anyOf { branch 'master'; branch 'feat/**' } }
             stages {
                 stage('Infra') {
                     agent {
@@ -179,7 +179,7 @@ pipeline {
             }
         }
         stage('prod') {
-            when { branch 'master'}
+            when { branch 'prod'}
             stages {
                 stage('Infra') {
                     agent {
@@ -233,7 +233,7 @@ pipeline {
     }
     post {
         success {
-            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
+            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}");
         }
         failure {
             setBuildStatus("Build failed", "FAILURE");
