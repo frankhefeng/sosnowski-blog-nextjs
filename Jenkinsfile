@@ -18,7 +18,7 @@ void setBuildStatus(String message, String state) {
 }
 
 pipeline {
-    agent any
+    agent none
     stages {
         stage('dev') {
             when { anyOf { branch 'master'; branch 'feat/**' } }
@@ -68,6 +68,7 @@ pipeline {
                             '''
                             sh "cd blog/out; aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}"
                             sh "aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
+                            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                         }
                     }
                 }
@@ -121,6 +122,7 @@ pipeline {
                             '''
                             sh "cd blog/out; aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}"
                             sh "aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
+                            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                         }
                     }
                 }
@@ -173,6 +175,7 @@ pipeline {
                             '''
                             sh "cd blog/out; aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}"
                             sh "aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
+                            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                         }
                     }
                 }
@@ -225,18 +228,11 @@ pipeline {
                             '''
                             sh "cd blog/out; aws s3 sync . s3://${BLOG_S3_BUCKET_NAME}"
                             sh "aws cloudfront create-invalidation --distribution-id $BLOG_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'"
+                            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
                         }
                     }
                 }
             }
-        }
-    }
-    post {
-        success {
-            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}");
-        }
-        failure {
-            setBuildStatus("Build failed", "FAILURE");
         }
     }
 }
