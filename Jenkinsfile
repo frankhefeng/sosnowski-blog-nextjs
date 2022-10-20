@@ -86,7 +86,7 @@ pipeline {
                     steps {
                         withAWS(credentials:'blog') {
                             sh '''
-                                export GIT_BRANCH_LOCAL=$(echo ${BRANCH_NAME}   | sed 's/.*/\\L&/')
+                                export GIT_BRANCH_LOCAL=$(echo ${BRANCH_NAME} | awk '{print tolower($0)}')
                                 export APP_ENV="app-${GIT_BRANCH_LOCAL}"
                                 cd infra/blog; 
                                 terraform init -input=false
