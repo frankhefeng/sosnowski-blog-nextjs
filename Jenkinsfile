@@ -18,7 +18,7 @@ void setBuildStatus(String message, String state) {
 }
 
 pipeline {
-    agent none
+    agent any
     stages {
         stage('dev') {
             when { branch 'feat/**' }
@@ -229,13 +229,13 @@ pipeline {
                 }
             }
         }
-        post {
-            success {
-                setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
-            }
-            failure {
-                setBuildStatus("Build failed", "FAILURE");
-            }
+    }
+    post {
+        success {
+            setBuildStatus("Build succeeded. Preview URL: https://${BLOG_CLOUDFRONT_DOMAIN_NAME}", "SUCCESS");
+        }
+        failure {
+            setBuildStatus("Build failed", "FAILURE");
         }
     }
 }
