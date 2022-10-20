@@ -86,7 +86,8 @@ pipeline {
                     steps {
                         withAWS(credentials:'blog') {
                             sh '''
-                                export APP_ENV="app-${BRANCH_NAME.toLowerCase()}"
+                                export GIT_BRANCH_LOCAL=$(echo ${BRANCH_NAME}   | sed 's/.*/\L&/')
+                                export APP_ENV="app-${GIT_BRANCH_LOCAL}"
                                 cd infra/blog; 
                                 terraform init -input=false
                                 terraform workspace select ${APP_ENV} || terraform workspace new ${APP_ENV}
