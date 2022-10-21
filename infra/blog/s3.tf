@@ -34,7 +34,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "blog_bucket_sse" 
 
 
 
-data "aws_iam_policy_document" "blog_bucket_oai_read_policy" {
+data "aws_iam_policy_document" "blog_bucket_oac_read_policy" {
   statement {
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.blog_bucket.arn}/*"]
@@ -53,5 +53,5 @@ data "aws_iam_policy_document" "blog_bucket_oai_read_policy" {
 
 resource "aws_s3_bucket_policy" "blog_bucket_policy" {
   bucket = aws_s3_bucket.blog_bucket.id
-  policy = data.aws_iam_policy_document.blog_bucket_oai_read_policy.json
+  policy = data.aws_iam_policy_document.blog_bucket_oac_read_policy.json
 }
